@@ -193,7 +193,8 @@ export class AppComponent implements OnInit {
       };
       // if the route already exists on the map, we'll reset it using setData
       const source = this.map.getSource("route");
-      if (source && source instanceof mapboxgl.GeoJSONSource) {
+      debugger
+      if (source && typeof source === "object" && "setData" in source) {
         source.setData(geojson);
       }
       // otherwise, we'll make a new request
@@ -304,8 +305,9 @@ map.addLayer({
     };
 
     if (this.map.getLayer("end")) {
+      debugger
       const source = this.map.getSource("end");
-      if (source && source instanceof mapboxgl.GeoJSONSource) {
+      if (source && typeof source === "object" && "setData" in source) {
         source.setData(end);
       }
     } else {
