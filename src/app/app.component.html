@@ -1,11 +1,15 @@
 <div id="map"></div>
 <div id="instructions">
-  <p><strong>Trip duration: {{currentMode}} min
+  <p><strong>Trip duration: {{duration}} min
     <br>
-    Distance to campus: {{currentMode}} km
+    Distance to campus: {{distance}} km
   </strong>
   </p>
-  <!-- <ol>${tripInstructions}</ol> -->
+  <ol>
+    <li *ngFor="let step of steps">
+      {{step.maneuver.instruction}}
+    </li>
+  </ol>
 </div>
 <div id="transportation-mode">
   <select id="mode-select">

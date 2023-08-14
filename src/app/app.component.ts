@@ -20,7 +20,11 @@ export class AppComponent implements OnInit {
 
   end = [9.6842208, 50.5650941];
 
-  constructor() { }
+  steps: any
+  duration: number = 0;
+  distance: number = 0;
+
+  constructor(private mapBoxService: MapboxService) { }
 
 
   ngOnInit() {
@@ -107,6 +111,14 @@ export class AppComponent implements OnInit {
         this.currentPopup.remove();
       }
 
+      // WILL CHECK THIS PART LATER
+      // if (feature.geometry.type === 'Point') {
+      //   const coords = Object.keys(feature.geometry.coordinates).map(
+      //     (key) => feature.geometry.coordinates[key]
+      //   );
+      // }
+      // WILL CHECK THIS PART LATER
+
       // Create a new popup and set its properties
       const popup = new mapboxgl.Popup({
         offset: [0, -15],
@@ -145,7 +157,7 @@ export class AppComponent implements OnInit {
       // Update the current popup
       this.currentPopup = popup;
 
-      //distanceToCampus(feature);
+      this.distanceToCampus(feature);
     });
   }
 
@@ -161,73 +173,76 @@ export class AppComponent implements OnInit {
 
   // create a function to make a directions request
 
-  // async getRoute(start: Number[], mode: string) {
-  //   // an arbitrary start will always be the same
-  //   // only the end or destination will change
-  //   // const query = await fetch(
-  //   //   `https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${this.end[0]},${this.end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-  //   //   { method: "GET" }
-  //   // );
-  //   this.mapBoxService.getRoute(start, this.end, mode).subscribe(json => {
-  //     const data = json.routes[0];
-  //     const route = data.geometry.coordinates;
-  //     const geojson: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
-  //       type: "Feature",
-  //       properties: {},
-  //       geometry: {
-  //         type: "LineString",
-  //         coordinates: route,
-  //       },
-  //     };
-  //     // if the route already exists on the map, we'll reset it using setData
-  //     const source = this.map.getSource("route");
-  //     if (source && source instanceof mapboxgl.GeoJSONSource) {
-  //       source.setData(geojson);
-  //     }
-  //     // otherwise, we'll make a new request
-  //     else {
-  //       this.map.addLayer({
-  //         id: "route",
-  //         type: "line",
-  //         source: {
-  //           type: "geojson",
-  //           data: geojson,
-  //         },
-  //         layout: {
-  //           "line-join": "round",
-  //           "line-cap": "round",
-  //         },
-  //         paint: {
-  //           "line-color": "#3887be",
-  //           "line-width": 4,
-  //           "line-opacity": 0.75,
-  //         },
-  //       });
-  //     }
+  async getRoute(start: Number[], mode: string) {
+    // an arbitrary start will always be the same
+    // only the end or destination will change
+    // const query = await fetch(
+    //   `https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${this.end[0]},${this.end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
+    //   { method: "GET" }
+    // );
+    this.mapBoxService.getRoute(start, this.end, mode).subscribe(json => {
+      const data = json.routes[0];
+      const route = data.geometry.coordinates;
+      const geojson: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: route,
+        },
+      };
+      // if the route already exists on the map, we'll reset it using setData
+      const source = this.map.getSource("route");
+      if (source && source instanceof mapboxgl.GeoJSONSource) {
+        source.setData(geojson);
+      }
+      // otherwise, we'll make a new request
+      else {
+        this.map.addLayer({
+          id: "route",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: geojson,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#3887be",
+            "line-width": 4,
+            "line-opacity": 0.75,
+          },
+        });
+      }
 
-  //     const steps = data.legs[0].steps;
-  //     let tripInstructions = "";
-  //     for (const step of steps) {
-  //       tripInstructions += `<li>${step.maneuver.instruction}</li>`;
-  //     }
-  //     // const instructions = document.getElementById("instructions");
-  //     // instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
-  //     //   data.duration / 60
-  //     // )}  min <br>
-  //     // Distance to campus: ${Math.floor(
-  //     //   data.distance / 1000
-  //     // )} km </strong></p><ol>${tripInstructions}</ol>`;
-  //   });
+      this.steps = data.legs[0].steps;
+      this.duration = Math.floor(data.duration / 60);
+      this.distance = Math.floor(data.distance / 1000);
 
-
-  //   // add turn instructions here at the end
-
-  //   // get the sidebar and add the instructions
-  //   //const instructions = document.getElementById("instructions");
+      // let tripInstructions = "";
+      // for (const step of steps) {
+      //   tripInstructions += `<li>${step.maneuver.instruction}</li>`;
+      // }
+      // const instructions = document.getElementById("instructions");
+      // instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
+      //   data.duration / 60
+      // )}  min <br>
+      // Distance to campus: ${Math.floor(
+      //   data.distance / 1000
+      // )} km </strong></p><ol>${tripInstructions}</ol>`;
+    });
 
 
+    // add turn instructions here at the end
 
-  // }
+    // get the sidebar and add the instructions
+    //const instructions = document.getElementById("instructions");
+
+
+
+  }
 
   /*
   map.on("load", () => {
@@ -268,12 +283,13 @@ map.addLayer({
 */
 
   // DISTANCE TO CAMPUS FUNCTION
-  /*
-  function distanceToCampus(feature) {
+
+  distanceToCampus(feature: any) {
+    debugger
     const coords = Object.keys(feature.geometry.coordinates).map(
       (key) => feature.geometry.coordinates[key]
     );
-    const end = {
+    const end: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
       type: "FeatureCollection",
       features: [
         {
@@ -286,11 +302,14 @@ map.addLayer({
         },
       ],
     };
-  
-    if (map.getLayer("end")) {
-      map.getSource("end").setData(end);
+
+    if (this.map.getLayer("end")) {
+      const source = this.map.getSource("end");
+      if (source && source instanceof mapboxgl.GeoJSONSource) {
+        source.setData(end);
+      }
     } else {
-      map.addLayer({
+      this.map.addLayer({
         id: "end",
         type: "circle",
         source: {
@@ -315,9 +334,8 @@ map.addLayer({
         },
       });
     }
-    getRoute(coords, currentMode);
+    this.getRoute(coords, this.currentMode);
   }
-  */
 
 
 
