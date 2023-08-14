@@ -14,17 +14,17 @@ export class MapboxService {
   constructor(private httpClient: HttpClient) {
   }
 
-  // public getRoute(start: Number[], end: Number[], mode: string): Observable<any> {
-  //   const api = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${end[0]},${end[1]}`;
-  //   return this.httpClient
-  //     .get(api, {
-  //       params: {
-  //         steps: 'true',
-  //         geometries: 'geojson',
-  //         access_token: this.token
-  //       },
-  //       responseType: 'json',
-  //     })
-  //     .pipe(catchError(_ => of('Error fetching route')));
-  // }
+  public getRoute(start: Number[], end: Number[], mode: string): Observable<any> {
+    const api = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${end[0]},${end[1]}`;
+    return this.httpClient
+      .get(api, {
+        params: {
+          steps: 'true',
+          geometries: 'geojson',
+          access_token: this.token
+        },
+        responseType: 'json',
+      })
+      .pipe(catchError(_ => of('Error fetching route')));
+  }
 }
