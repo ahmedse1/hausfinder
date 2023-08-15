@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from '../environments/environment';
 import { MapboxService } from './services/mapbox.service';
+import { DirectionsComponent } from './directions/directions/directions.component';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +19,12 @@ export class AppComponent implements OnInit {
 
   map!: mapboxgl.Map;
 
-  end = [9.6842208, 50.5650941];
-
   steps: any
   duration: number = 0;
   distance: number = 0;
+
+  @ViewChild(DirectionsComponent)
+  direction!: DirectionsComponent;
 
   constructor(private mapBoxService: MapboxService) { }
 
@@ -92,12 +94,14 @@ export class AppComponent implements OnInit {
     //   //   this.map.getSource("single-point").setData(event.result.geometry);
     //   // });
     // });
+
+    //this.getRoute(this.end, this.currentMode);
   }
 
 
   createPopup(type: string) {
     debugger;
-    this.map.on("mousemove", type, (event) => {
+    this.map.on("click", type, (event) => {
       const features = this.map.queryRenderedFeatures(event.point, {
         layers: [type]
       });
@@ -173,77 +177,7 @@ export class AppComponent implements OnInit {
 
   // create a function to make a directions request
 
-  async getRoute(start: Number[], mode: string) {
-    // an arbitrary start will always be the same
-    // only the end or destination will change
-    // const query = await fetch(
-    //   `https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${this.end[0]},${this.end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-    //   { method: "GET" }
-    // );
-    this.mapBoxService.getRoute(start, this.end, mode).subscribe(json => {
-      const data = json.routes[0];
-      const route = data.geometry.coordinates;
-      const geojson: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "LineString",
-          coordinates: route,
-        },
-      };
-      // if the route already exists on the map, we'll reset it using setData
-      const source = this.map.getSource("route");
-      debugger
-      if (source && typeof source === "object" && "setData" in source) {
-        source.setData(geojson);
-      }
-      // otherwise, we'll make a new request
-      else {
-        this.map.addLayer({
-          id: "route",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: geojson,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#3887be",
-            "line-width": 4,
-            "line-opacity": 0.75,
-          },
-        });
-      }
 
-      this.steps = data.legs[0].steps;
-      this.duration = Math.floor(data.duration / 60);
-      this.distance = Math.floor(data.distance / 1000);
-
-      // let tripInstructions = "";
-      // for (const step of steps) {
-      //   tripInstructions += `<li>${step.maneuver.instruction}</li>`;
-      // }
-      // const instructions = document.getElementById("instructions");
-      // instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
-      //   data.duration / 60
-      // )}  min <br>
-      // Distance to campus: ${Math.floor(
-      //   data.distance / 1000
-      // )} km </strong></p><ol>${tripInstructions}</ol>`;
-    });
-
-
-    // add turn instructions here at the end
-
-    // get the sidebar and add the instructions
-    //const instructions = document.getElementById("instructions");
-
-
-
-  }
 
   /*
   map.on("load", () => {
@@ -286,7 +220,6 @@ map.addLayer({
   // DISTANCE TO CAMPUS FUNCTION
 
   distanceToCampus(feature: any) {
-    debugger
     const coords = Object.keys(feature.geometry.coordinates).map(
       (key) => feature.geometry.coordinates[key]
     );
@@ -305,7 +238,6 @@ map.addLayer({
     };
 
     if (this.map.getLayer("end")) {
-      debugger
       const source = this.map.getSource("end");
       if (source && typeof source === "object" && "setData" in source) {
         source.setData(end);
@@ -336,27 +268,9 @@ map.addLayer({
         },
       });
     }
-    this.getRoute(coords, this.currentMode);
+    this.direction.getRoute(coords, this.currentMode);
   }
 
-
-
-
-
-  // Add a click event listener to the Get Directions button
-  // Get the mode-select element
-  //const modeSelect = document.getElementById("mode-select");
-
-  // Add an event listener to listen for changes in the selected option
-  /*
-  modeSelect.addEventListener("change", function () {
-    // Get the value of the selected option
-    const selectedOption = modeSelect.value;
-    currentMode = selectedOption;
-    // Print the selected option in the console
-    getRoute(end, currentMode);
-  });
-  */
 
   // const imageUrl = [
   //   "https://rb.gy/5qcuk",
