@@ -1,0 +1,12 @@
+<div id="instructions">
+    <p><strong>Trip duration: {{duration}} min
+      <br>
+      Distance to campus: {{distance}} km
+    </strong>
+    </p>
+    <ol>
+      <li *ngFor="let step of steps">
+        {{step.maneuver.instruction}}
+      </li>
+    </ol>
+  </div>

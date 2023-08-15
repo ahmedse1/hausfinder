@@ -92,6 +92,8 @@ export class AppComponent implements OnInit {
     //   //   this.map.getSource("single-point").setData(event.result.geometry);
     //   // });
     // });
+
+    //this.getRoute(this.end, this.currentMode);
   }
 
 
@@ -286,7 +288,6 @@ map.addLayer({
   // DISTANCE TO CAMPUS FUNCTION
 
   distanceToCampus(feature: any) {
-    debugger
     const coords = Object.keys(feature.geometry.coordinates).map(
       (key) => feature.geometry.coordinates[key]
     );
@@ -305,7 +306,6 @@ map.addLayer({
     };
 
     if (this.map.getLayer("end")) {
-      debugger
       const source = this.map.getSource("end");
       if (source && typeof source === "object" && "setData" in source) {
         source.setData(end);
@@ -339,24 +339,6 @@ map.addLayer({
     this.getRoute(coords, this.currentMode);
   }
 
-
-
-
-
-  // Add a click event listener to the Get Directions button
-  // Get the mode-select element
-  //const modeSelect = document.getElementById("mode-select");
-
-  // Add an event listener to listen for changes in the selected option
-  /*
-  modeSelect.addEventListener("change", function () {
-    // Get the value of the selected option
-    const selectedOption = modeSelect.value;
-    currentMode = selectedOption;
-    // Print the selected option in the console
-    getRoute(end, currentMode);
-  });
-  */
 
   // const imageUrl = [
   //   "https://rb.gy/5qcuk",
