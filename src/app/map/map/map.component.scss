@@ -1,0 +1,78 @@
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#transportation-mode {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    background-color: #fff;
+    padding: 4px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+#transportation-mode select {
+    margin-right: 10px;
+}
+
+#legend {
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    opacity: 75%;
+}
+
+.reddot {
+    height: 22px;
+    width: 22px;
+    background-color: #ce5353;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.yellowdot {
+    height: 22px;
+    width: 22px;
+    background-color: #06c241;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.greendot {
+    height: 22px;
+    width: 22px;
+    background-color: #e3e344;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-container {
+    display: flex;
+    align-items: center;
+}
+
+.text {
+    margin: 10px;
+    font-size: small;
+}
+
+.svgicon {
+    width: 25px;
+    height: 22px;
+}
+
+.iconlgnd {
+    padding-right: 10px;
+    display: flex;
+}
