@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SignupComponent } from './signup/signup/signup.component';
-import { MapComponent } from './map/map/map.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
-  { path: 'signup', component: SignupComponent },
-  { path: '', redirectTo: 'signup', pathMatch: 'full' },
-  { path: 'map', component: MapComponent }
+  //{ path: "app", component: AppComponent },
+  //{ path: '', redirectTo: 'app', pathMatch: 'full' }
 ];
 
 @NgModule({
