@@ -14,6 +14,8 @@ export class DirectionsComponent implements OnInit {
 
   steps: any;
 
+  currentMode = "walking";
+
   @Input()
   map!: mapboxgl.Map;
 
@@ -30,9 +32,9 @@ export class DirectionsComponent implements OnInit {
 
   }
 
-  async getRoute(start: Number[], mode: string) {
+  async getRoute(start: Number[]) {
     debugger
-    const json = await this.mapBoxService.getRoute(start, this.end, mode);
+    const json = await this.mapBoxService.getRoute(start, this.end, this.currentMode);
 
     const data = json.routes[0];
     const route = data.geometry.coordinates;

@@ -1,25 +1,8 @@
 #map {
     position: absolute;
-    top: 0;
+    top: 56px;
     bottom: 0;
     width: 100%;
-}
-
-#transportation-mode {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1;
-    background-color: #fff;
-    padding: 4px;
-    border-radius: 4px;
-    font-family: sans-serif;
-    margin-left: 10px;
-    border-radius: 5px;
-}
-
-#transportation-mode select {
-    margin-right: 10px;
 }
 
 #legend {

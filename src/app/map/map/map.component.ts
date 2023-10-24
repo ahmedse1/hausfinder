@@ -267,7 +267,7 @@ map.addLayer({
         },
       });
     }
-    this.direction.getRoute(coords, this.currentMode);
+    this.direction.getRoute(coords);
   }
 
 
