@@ -7,6 +7,11 @@ body {
   background: #ededed;
 }
 
+.app-container {
+  min-height: 320px;
+  overflow: hidden;
+}
+
 .custom-popup {
   max-height: 300px;
   max-width: 300px;

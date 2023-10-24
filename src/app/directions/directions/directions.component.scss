@@ -1,9 +1,30 @@
+.direction-elements {
+    top: 60px;
+}
+
+#transportation-mode {
+    position: absolute;
+    //top: 10px;
+    left: 10px;
+    z-index: 1;
+    background-color: #fff;
+    padding: 4px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+#transportation-mode select {
+    margin-right: 10px;
+}
+
 #instructions {
     position: absolute;
     margin: 20px;
     width: 20%;
-    top: 35px;
-    bottom: 30%;
+    top: 90px;
+    bottom: 20%;
     padding: 20px;
     background-color: #fff;
     overflow-y: scroll;
