@@ -22,8 +22,7 @@ $switchAT: 1.2s;
 $inputW: 260px;
 $btnH: 36px;
 
-$diffRatio: (
-    $contW - $imgW) / $contW;
+$diffRatio: calc(($contW - $imgW) / $contW);
 
 @mixin signUpActive {
     .cont.s--signup & {
@@ -66,9 +65,8 @@ $diffRatio: (
     transition: transform $switchAT ease-in-out;
 
     @include signUpActive {
-        transform: translate3d($formW * -1, 0, 0
-        );
-}
+        transform: translate3d($formW * -1, 0, 0);
+    }
 }
 
 button {
