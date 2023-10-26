@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../environments/environment';
-import * as mapboxgl from 'mapbox-gl';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
