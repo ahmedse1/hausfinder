@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import * as mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import mapboxgl from 'mapbox-gl';
 import { environment } from '../../../environments/environment';
 import { DirectionsComponent } from '../../directions/directions/directions.component';
 
